@@ -1,0 +1,42 @@
+services:
+  database:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: learningtracker
+      MYSQL_USER: learningtracker
+      MYSQL_PASSWORD: ${DB_PASSWORD:-learningtracker}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root-local-only}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-root-local-only}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  backend:
+    build: .
+    environment:
+      DATABASE_URL: jdbc:mysql://database:3306/learningtracker?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DATABASE_USERNAME: learningtracker
+      DATABASE_PASSWORD: ${DB_PASSWORD:-learningtracker}
+      JWT_SECRET: ${JWT_SECRET:-docker-demo-secret-change-before-deploying-123456}
+      APP_SEED_DEMO: "true"
+      APP_ADMIN_USERNAME: ${APP_ADMIN_USERNAME:-demo-admin}
+      APP_ADMIN_PASSWORD: ${APP_ADMIN_PASSWORD:-demo-password}
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "${APP_PORT:-3000}:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  mysql-data:

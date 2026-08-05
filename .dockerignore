@@ -1,0 +1,11 @@
+.git
+.github
+.vscode
+.idea
+target
+frontend/node_modules
+frontend/dist
+_bmad
+_bmad-output
+*.log
+.env

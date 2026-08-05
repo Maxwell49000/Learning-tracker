@@ -1,0 +1,21 @@
+#root { min-height: 100vh; }
+
+.app-main { min-height: calc(100vh - 73px); }
+
+.eyebrow {
+  color: #25634a;
+  font-size: .75rem;
+  font-weight: 750;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 600px) {
+  .app-main { min-height: calc(100vh - 65px); }
+}
