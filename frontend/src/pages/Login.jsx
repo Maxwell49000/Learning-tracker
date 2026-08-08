@@ -20,40 +20,35 @@ export default function Login() {
     const error = useAppSelector(selectAuthError)
     const status = useAppSelector(selectAuthStatus)
     const navigate = useNavigate()
-
     useEffect(() => { if (token) navigate('/home', { replace: true }) }, [token, navigate])
-
-    const handleSubmit = async (event) => {
-        event.preventDefault()
-        await dispatch(loginUser({ username, password }))
-    }
+    const handleSubmit = (event) => { event.preventDefault(); dispatch(loginUser({ username, password })) }
 
     return (
-        <Container maxWidth="lg">
-            <Box sx={{ minHeight: 'calc(100vh - 73px)', display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, alignItems: 'center', gap: { xs: 7, md: 12 }, py: 7 }}>
-                <Box>
-                    <Typography className="eyebrow">Bon retour</Typography>
-                    <Typography variant="h2" component="h1" sx={{ mt: 2, mb: 3 }}>Reprenez là où<br />vous en étiez.</Typography>
-                    <Typography color="text.secondary" sx={{ maxWidth: 480, lineHeight: 1.7 }}>
-                        Vos cours, vos contenus et votre progression sont réunis dans un espace pensé pour rester concentré.
-                    </Typography>
-                </Box>
-                <Box component="form" onSubmit={handleSubmit} sx={{ bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider', borderRadius: 3, p: { xs: 3, sm: 5 }, boxShadow: '0 24px 70px rgba(28,42,33,.08)' }}>
-                    <Typography variant="h4" component="h2" sx={{ mb: 1 }}>Connexion</Typography>
-                    <Typography color="text.secondary" sx={{ mb: 4 }}>Accédez à votre espace personnel.</Typography>
-                    {error && <Alert severity="error" sx={{ mb: 3 }}>{error.message || error}</Alert>}
-                    <Box sx={{ display: 'grid', gap: 2.5 }}>
-                        <TextField label="Nom d’utilisateur" value={username} onChange={(event) => setUsername(event.target.value)} autoComplete="username" required fullWidth />
-                        <TextField label="Mot de passe" type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required fullWidth />
-                        <Button type="submit" variant="contained" size="large" endIcon={<ArrowForwardIcon />} disabled={status === 'loading'}>
-                            {status === 'loading' ? 'Connexion…' : 'Se connecter'}
-                        </Button>
+        <Box className="editorial-grid">
+            <Container>
+                <Box sx={{ minHeight: 'calc(100vh - 77px)', display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 470px' }, alignItems: 'center', gap: { xs: 7, md: 12 }, py: { xs: 7, md: 10 } }}>
+                    <Box>
+                        <Typography className="eyebrow">Bon retour</Typography>
+                        <Typography variant="h2" component="h1" sx={{ mt: 2.5, mb: 3, maxWidth: 650 }}>Reprenez là où vous vous êtes arrêté.</Typography>
+                        <Typography color="text.secondary" sx={{ maxWidth: 500 }}>Vos cours, vos ressources et votre progression. Rien de plus, rien de moins.</Typography>
+                        <Box sx={{ display: { xs: 'none', md: 'grid' }, gridTemplateColumns: 'repeat(3, 56px)', gap: 1, mt: 7 }}>
+                            {[.35, .68, 1].map((opacity, index) => <Box key={opacity} sx={{ height: 8 + index * 9, bgcolor: 'secondary.main', opacity, alignSelf: 'end' }} />)}
+                        </Box>
                     </Box>
-                    <Typography variant="body2" color="text.secondary" sx={{ mt: 3, textAlign: 'center' }}>
-                        Nouveau ici ? <LinkMui component={Link} to="/register" color="primary" fontWeight={650}>Créer un compte</LinkMui>
-                    </Typography>
+                    <Box component="form" onSubmit={handleSubmit} sx={{ bgcolor: 'background.paper', border: '1px solid', borderColor: 'primary.main', p: { xs: 3, sm: 5 }, boxShadow: { sm: '8px 8px 0 #14213D' } }}>
+                        <Typography variant="caption" color="secondary.main" fontWeight={800} sx={{ letterSpacing: '.14em', textTransform: 'uppercase' }}>Accès membre</Typography>
+                        <Typography variant="h4" component="h2" sx={{ mt: 1.5, mb: 1 }}>Connexion</Typography>
+                        <Typography color="text.secondary" sx={{ mb: 4 }}>Entrez vos identifiants pour continuer.</Typography>
+                        {error && <Alert severity="error" sx={{ mb: 3 }}>{error.message || error}</Alert>}
+                        <Box sx={{ display: 'grid', gap: 2.2 }}>
+                            <TextField label="Nom d’utilisateur" value={username} onChange={(event) => setUsername(event.target.value)} autoComplete="username" required fullWidth />
+                            <TextField label="Mot de passe" type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required fullWidth />
+                            <Button type="submit" variant="contained" color="secondary" size="large" endIcon={<ArrowForwardIcon />} disabled={status === 'loading'}>{status === 'loading' ? 'Connexion…' : 'Se connecter'}</Button>
+                        </Box>
+                        <Typography variant="body2" color="text.secondary" sx={{ mt: 3, textAlign: 'center' }}>Nouveau ici ? <LinkMui component={Link} to="/register" color="primary" fontWeight={750}>Créer un compte</LinkMui></Typography>
+                    </Box>
                 </Box>
-            </Box>
-        </Container>
+            </Container>
+        </Box>
     )
 }

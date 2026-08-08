@@ -1,21 +1,35 @@
 #root { min-height: 100vh; }
-
-.app-main { min-height: calc(100vh - 73px); }
+.app-main { min-height: calc(100vh - 77px); }
 
 .eyebrow {
-  color: #25634a;
-  font-size: .75rem;
-  font-weight: 750;
-  letter-spacing: .12em;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--coral);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .15em;
   text-transform: uppercase;
+}
+.eyebrow::before {
+  content: '';
+  width: 22px;
+  height: 2px;
+  background: currentColor;
 }
 
 .course-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 18px;
+}
+
+.editorial-grid {
+  background-image: linear-gradient(to right, rgba(20,33,61,.055) 1px, transparent 1px);
+  background-size: calc(100% / 12) 100%;
 }
 
 @media (max-width: 600px) {
   .app-main { min-height: calc(100vh - 65px); }
+  .editorial-grid { background-size: calc(100% / 4) 100%; }
 }

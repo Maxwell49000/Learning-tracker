@@ -1,8 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
-import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
@@ -10,10 +7,10 @@ import Typography from '@mui/material/Typography'
 import Footer from '../components/Footer'
 import { useAppSelector } from '../app/hooks'
 
-const features = [
-    { number: '01', icon: <AutoStoriesOutlinedIcon />, title: 'Tout au même endroit', text: 'Retrouvez vos cours et leurs ressources dans un espace clair et structuré.' },
-    { number: '02', icon: <CheckCircleOutlineIcon />, title: 'Avancez à votre rythme', text: 'Marquez les contenus terminés et reprenez exactement là où vous vous êtes arrêté.' },
-    { number: '03', icon: <InsightsOutlinedIcon />, title: 'Gardez le cap', text: 'Visualisez votre progression globale et le détail pour chaque parcours.' },
+const principles = [
+    { number: '01', title: 'Centraliser', text: 'Cours, ressources et avancement réunis dans un espace lisible.' },
+    { number: '02', title: 'Progresser', text: 'Une progression visible, sans mécanique inutile ni distraction.' },
+    { number: '03', title: 'Continuer', text: 'Retrouvez immédiatement le bon contenu et reprenez votre parcours.' },
 ]
 
 export default function Home() {
@@ -22,35 +19,39 @@ export default function Home() {
 
     return (
         <>
-            <Container maxWidth="lg">
-                <Box component="section" sx={{ py: { xs: 8, md: 14 }, borderBottom: '1px solid', borderColor: 'divider' }}>
-                    <Typography className="eyebrow">Votre espace d’apprentissage</Typography>
-                    <Typography variant="h1" component="h1" sx={{ mt: 2.5, maxWidth: 900 }}>
-                        Apprendre avec<br />un cap clair.
-                    </Typography>
-                    <Box sx={{ mt: 4, display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1.2fr .8fr' }, gap: 4, alignItems: 'end' }}>
-                        <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 640, fontWeight: 400, lineHeight: 1.6 }}>
-                            Bonjour {username || 'à vous'}. Organisez vos cours, consultez vos ressources et mesurez vos progrès sans distraction.
-                        </Typography>
-                        <Box sx={{ display: 'flex', justifyContent: { md: 'flex-end' } }}>
-                            <Button variant="contained" size="large" endIcon={<ArrowForwardIcon />} onClick={() => navigate('/courses')}>Continuer mes cours</Button>
+            <Box className="editorial-grid" sx={{ borderBottom: '1px solid', borderColor: 'primary.main' }}>
+                <Container>
+                    <Box component="section" sx={{ minHeight: { md: 610 }, py: { xs: 8, md: 12 }, display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 1fr) 320px' }, gap: { xs: 7, md: 10 }, alignItems: 'end' }}>
+                        <Box>
+                            <Typography className="eyebrow">Espace de {username || 'formation'}</Typography>
+                            <Typography variant="h1" component="h1" sx={{ mt: 3, maxWidth: 820 }}>
+                                Votre savoir.<br /><Box component="span" sx={{ color: 'secondary.main' }}>Votre rythme.</Box><br />Un cap clair.
+                            </Typography>
+                        </Box>
+                        <Box sx={{ pb: { md: 1 } }}>
+                            <Box sx={{ width: 54, height: 7, bgcolor: 'secondary.main', mb: 3 }} />
+                            <Typography color="text.secondary" sx={{ fontSize: '1.05rem', mb: 4 }}>
+                                Un espace simple pour suivre vos cours, retrouver vos ressources et mesurer ce qui est accompli.
+                            </Typography>
+                            <Button variant="contained" color="secondary" size="large" endIcon={<ArrowForwardIcon />} onClick={() => navigate('/courses')}>Reprendre mes cours</Button>
                         </Box>
                     </Box>
-                </Box>
+                </Container>
+            </Box>
 
-                <Box component="section" sx={{ py: { xs: 7, md: 10 } }}>
-                    <Typography variant="h3" component="h2" sx={{ mb: 5 }}>L’essentiel, simplement.</Typography>
-                    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 0, borderTop: '1px solid', borderColor: 'divider' }}>
-                        {features.map((feature, index) => (
-                            <Box key={feature.number} sx={{ py: 4, px: { xs: 0, md: 4 }, pl: { md: index === 0 ? 0 : 4 }, borderBottom: { xs: '1px solid', md: 0 }, borderLeft: { md: index === 0 ? 0 : '1px solid' }, borderColor: 'divider' }}>
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', color: 'primary.main', mb: 5 }}>
-                                    {feature.icon}<Typography variant="caption" sx={{ fontWeight: 700 }}>{feature.number}</Typography>
-                                </Box>
-                                <Typography variant="h5" sx={{ mb: 1.5 }}>{feature.title}</Typography>
-                                <Typography color="text.secondary" sx={{ lineHeight: 1.7 }}>{feature.text}</Typography>
-                            </Box>
-                        ))}
-                    </Box>
+            <Container component="section" sx={{ py: { xs: 8, md: 11 } }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', gap: 3, mb: 5 }}>
+                    <Box><Typography className="eyebrow">La méthode</Typography><Typography variant="h3" component="h2" sx={{ mt: 1.5 }}>L’essentiel, bien ordonné.</Typography></Box>
+                    <Typography variant="caption" color="text.secondary" sx={{ display: { xs: 'none', sm: 'block' } }}>LEARNING TRACKER / 2026</Typography>
+                </Box>
+                <Box sx={{ borderTop: '1px solid', borderColor: 'primary.main' }}>
+                    {principles.map((item) => (
+                        <Box key={item.number} sx={{ display: 'grid', gridTemplateColumns: { xs: '52px 1fr', md: '100px .75fr 1fr' }, gap: { xs: 2, md: 4 }, alignItems: 'baseline', py: { xs: 3, md: 4 }, borderBottom: '1px solid', borderColor: 'divider' }}>
+                            <Typography variant="caption" color="secondary.main" fontWeight={800}>{item.number}</Typography>
+                            <Typography variant="h5">{item.title}</Typography>
+                            <Typography color="text.secondary" sx={{ gridColumn: { xs: '2', md: 'auto' }, maxWidth: 520 }}>{item.text}</Typography>
+                        </Box>
+                    ))}
                 </Box>
             </Container>
             <Footer />

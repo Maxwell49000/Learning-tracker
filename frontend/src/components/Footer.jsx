@@ -4,10 +4,13 @@ import Typography from '@mui/material/Typography'
 
 export default function Footer() {
     return (
-        <Box component="footer" sx={{ borderTop: '1px solid', borderColor: 'divider', py: 3.5, mt: 8 }}>
-            <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, flexWrap: 'wrap' }}>
-                <Typography variant="body2" color="text.secondary">Learning Tracker</Typography>
-                <Typography variant="body2" color="text.secondary">Projet de démonstration · {new Date().getFullYear()}</Typography>
+        <Box component="footer" sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', mt: 10 }}>
+            <Container sx={{ py: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'end', gap: 3, flexWrap: 'wrap' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.4 }}>
+                    <Box className="brand-mark" sx={{ bgcolor: 'background.paper', '&::before, &::after': { bgcolor: 'primary.main' } }}><span /></Box>
+                    <Box><Typography fontWeight={800}>Learning Tracker</Typography><Typography variant="caption" sx={{ opacity: .68 }}>Avancer avec un cap clair.</Typography></Box>
+                </Box>
+                <Typography variant="caption" sx={{ opacity: .65 }}>Projet portfolio · {new Date().getFullYear()}</Typography>
             </Container>
         </Box>
     )

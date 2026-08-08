@@ -2,19 +2,42 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --ink: #14213d;
+  --coral: #e85d3f;
+  --paper: #fffdf7;
+  --canvas: #f3f0e8;
+  --line: #d9d5cb;
 }
 
 * { box-sizing: border-box; }
-
 html { scroll-behavior: smooth; }
-
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
+body { margin: 0; min-width: 320px; min-height: 100vh; }
 a { color: inherit; }
+button, input, textarea { font: inherit; }
 
-button, input { font: inherit; }
+.brand-mark {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  background: var(--ink);
+  overflow: hidden;
+}
+.brand-mark::before,
+.brand-mark::after {
+  content: '';
+  position: absolute;
+  left: 7px;
+  height: 4px;
+  background: var(--paper);
+}
+.brand-mark::before { width: 20px; top: 9px; }
+.brand-mark::after { width: 13px; top: 20px; }
+.brand-mark span {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  right: 0;
+  bottom: 0;
+  background: var(--coral);
+}
