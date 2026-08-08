@@ -1,25 +1,40 @@
 # Learning Tracker
 
-Une application full-stack de gestion de cours et de suivi de progression. Elle permet aux apprenants de parcourir des contenus, de marquer leur avancement et aux administrateurs de gérer le catalogue et les utilisateurs.
+[![CI](https://github.com/Maxwell49000/Learning-tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/Maxwell49000/Learning-tracker/actions/workflows/ci.yml)
+
+Application full-stack de gestion de cours et de suivi de progression. Learning Tracker propose un espace clair pour parcourir des contenus pédagogiques, suivre son avancement et administrer un catalogue de formation.
 
 ## Aperçu
 
-- Authentification stateless par JWT et rôles `USER` / `ADMIN`
-- Routes privées côté interface et autorisations contrôlées côté API
-- Catalogue de cours et de contenus pédagogiques
-- Progression globale, par cours et par contenu
-- Tableau de bord d’administration
-- API documentée avec OpenAPI / Swagger
-- Environnement complet reproductible avec Docker Compose
+![Catalogue des parcours](docs/screenshots/02-parcours-desktop.png)
+
+| Détail d’un cours | Administration |
+| --- | --- |
+| ![Détail d’un cours](docs/screenshots/03-detail-cours-desktop.png) | ![Administration](docs/screenshots/04-administration-desktop.png) |
+
+L’interface possède une identité éditoriale responsive, construite autour d’une palette ivoire, bleu encre et vermillon. Une [galerie complète](docs/screenshots) est disponible dans la documentation.
+
+## Fonctionnalités
+
+- authentification stateless par JWT avec rôles `USER` et `ADMIN` ;
+- catalogue de cours et de contenus pédagogiques ;
+- progression globale, par cours et par contenu ;
+- reprise visuelle des contenus déjà terminés ;
+- administration des cours, contenus et utilisateurs ;
+- routes privées côté React et autorisations vérifiées côté API ;
+- documentation OpenAPI / Swagger ;
+- données de démonstration reproductibles avec Docker Compose ;
+- intégration continue pour les tests, le lint et le build.
 
 ## Stack technique
 
 | Couche | Technologies |
 | --- | --- |
-| Frontend | React 19, Vite, Redux Toolkit, Material UI |
-| Backend | Java 21, Spring Boot, Spring Security, Spring Data JPA |
-| Données | MySQL 8.4 en production, H2 pour les tests |
-| Qualité | JUnit, ESLint, GitHub Actions, Docker multi-stage |
+| Frontend | React 19, Vite, Redux Toolkit, Material UI, Axios |
+| Backend | Java 21, Spring Boot 4, Spring Security, Spring Data JPA |
+| Données | MySQL 8.4, H2 pour les tests |
+| Infrastructure | Docker Compose, Nginx, images multi-stage |
+| Qualité | JUnit 5, ESLint, GitHub Actions |
 
 ## Démarrage rapide avec Docker
 
@@ -30,35 +45,51 @@ cp .env.example .env
 docker compose up --build
 ```
 
+Sous PowerShell :
+
+```powershell
+Copy-Item .env.example .env
+docker compose up --build
+```
+
 Ouvrez ensuite [http://localhost:3000](http://localhost:3000).
 
-Le mode Docker initialise trois cours de démonstration et un compte administrateur local :
+Le mode Docker initialise trois cours et un compte administrateur de démonstration :
 
-- utilisateur : `demo-admin`
-- mot de passe : `demo-password`
+```text
+Utilisateur : demo-admin
+Mot de passe : demo-password
+```
 
-Ces identifiants sont uniquement destinés à la démonstration locale. Modifiez-les dans `.env` avant tout déploiement.
+Ces identifiants sont uniquement destinés à une démonstration locale. Remplacez les secrets de `.env` avant tout déploiement public.
 
-Pour arrêter l’application :
+Pour arrêter l’application sans supprimer les données :
 
 ```bash
 docker compose down
 ```
 
-Ajoutez `-v` uniquement si vous souhaitez aussi supprimer les données MySQL locales.
+La commande `docker compose down -v` supprime également le volume MySQL.
 
-## Lancement en développement
+## Développement local
 
-Prérequis : Java 21, Maven 3.9+, Node.js 22+ et MySQL 8+.
+Prérequis : Java 21, Node.js 22+, npm et MySQL 8+.
 
-1. Créez une base `learningtracker` et configurez si nécessaire `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD` et `JWT_SECRET`.
-2. Lancez l’API depuis la racine :
+1. Créez une base `learningtracker`.
+2. Configurez `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD` et `JWT_SECRET`.
+3. Lancez l’API :
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-3. Dans un second terminal, lancez le frontend :
+Sous Windows :
+
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+4. Lancez le frontend dans un second terminal :
 
 ```bash
 cd frontend
@@ -66,21 +97,44 @@ npm ci
 npm run dev
 ```
 
-Vite sert l’interface sur `http://localhost:5173` et relaie `/api` vers `http://localhost:8080`.
+Vite sert l’interface sur `http://localhost:5173` et relaie `/api` vers Spring Boot sur le port `8080`.
 
-## Tests et contrôles qualité
+## Tests et qualité
+
+Backend :
 
 ```bash
 ./mvnw test
+```
+
+Frontend :
+
+```bash
 cd frontend
 npm run lint
 npm run build
 ```
 
-L’interface Swagger est disponible sur `http://localhost:8080/swagger-ui/index.html` lorsque l’API est lancée.
+La CI exécute automatiquement ces contrôles à chaque push sur `main` et pour chaque pull request.
 
-## Configuration
+## API et documentation
 
-Les principales variables sont documentées dans [`.env.example`](.env.example). En dehors du profil de test, l’inscription publique crée toujours un compte `USER` : le rôle envoyé par le client n’est jamais utilisé pour obtenir des privilèges administrateur.
+Lorsque l’API est lancée, Swagger UI est disponible sur :
 
-Pour comprendre les choix de structure et les flux principaux, consultez [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+```text
+http://localhost:8080/swagger-ui/index.html
+```
+
+Pour aller plus loin :
+
+- [Architecture technique](docs/ARCHITECTURE.md)
+- [Documentation du frontend](frontend/README.md)
+- [Variables d’environnement](.env.example)
+
+## Sécurité de la démonstration
+
+- les mots de passe sont stockés sous forme de hash BCrypt ;
+- l’API ne conserve aucune session serveur ;
+- les routes d’administration exigent le rôle `ADMIN` ;
+- une inscription publique crée toujours un utilisateur standard ;
+- les secrets réels et le fichier `.env` ne sont pas suivis par Git.
